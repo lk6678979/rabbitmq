@@ -5,6 +5,8 @@ import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.TimeoutException;
 
 /**
@@ -27,8 +29,12 @@ public class SenderSimple {
             // 从连接中创建通道
             channel = con.createChannel();
 
+            // 队列参数
+            Map<String, Object> params = new HashMap();
+            params.put("x-message-ttl", 60*1000);// 消息过期时间
+
             //声明队列【参数说明：参数一：队列名称，参数二：是否持久化；参数三：是否独占模式，如果为true，则其他通道不能访问当前队列；参数四：消费者断开连接时是否删除队列；参数五：消息其他参数】
-            channel.queueDeclare(QUEUE, false, false, false, null).getQueue();
+            channel.queueDeclare(QUEUE, false, false, false, params).getQueue();
 
             // 消息内容
             String msg = "哈哈哈哈哈哈哈2!";
