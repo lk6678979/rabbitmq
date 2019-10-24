@@ -44,8 +44,9 @@ public class CreateExtendAndQueue {
             channel.queueDeclare(QUEUE, true, false, false, null).getQueue();
 
             //将交换器与队列通过路由键绑定,第一个参数：队列名，第二个参数：交换机名称，第三个参数：队列在交换机中的路由映射
+            //同一个队列可以绑定多次，每次不同的RoutingKey
             channel.queueBind(QUEUE, EXCHANGE, QUEUE);
-
+//            channel.queueBind(QUEUE, EXCHANGE, QUEUE+"2");
             System.out.println("操作成功");
         } catch (IOException e) {
             e.printStackTrace();
