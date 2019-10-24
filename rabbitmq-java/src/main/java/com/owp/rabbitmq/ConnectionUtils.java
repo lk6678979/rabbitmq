@@ -28,11 +28,11 @@ public class ConnectionUtils {
          * 每个VirtualHost之间是相互隔离的。exchange、queue、message不能互通，早操作界面【admin】下的【Add a new virtual host】可以添加
          * 需要先在mq中设置了虚拟消息服务器才能使用
          */
-//        factory.setVirtualHost("/vhost_test");
+        factory.setVirtualHost("/vmsdms");
         // 用户名
-        factory.setUsername("sziov");
+        factory.setUsername("liukai");
         // 密码
-        factory.setPassword("sziov");
+        factory.setPassword("liukai");
         return factory.newConnection();
     }
 

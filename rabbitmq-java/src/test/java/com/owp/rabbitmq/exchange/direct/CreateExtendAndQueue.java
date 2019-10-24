@@ -1,25 +1,13 @@
 package com.owp.rabbitmq.exchange.direct;
 
 import com.owp.rabbitmq.ConnectionUtils;
-import com.rabbitmq.client.AMQP;
-import com.rabbitmq.client.Channel;
-import com.rabbitmq.client.Connection;
-import com.rabbitmq.client.MessageProperties;
+import com.rabbitmq.client.*;
 
 import java.io.IOException;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.concurrent.TimeoutException;
 
-/**
- * 使用直连交换机
- * 直连型交换机（direct exchange）是根据消息携带的路由键（routing key）将消息投递给对应队列的，步骤如下：
- * <p>
- * 1.将一个队列绑定到某个交换机上，同时赋予该绑定一个路由键（routing key）
- * 2.当一个携带着路由值为R的消息被发送给直连交换机时，交换机会把它路由给绑定值同样为R的队列。
- */
-public class SenderWithDirectExchange {
+public class CreateExtendAndQueue {
+
     /**
      * 队列名称
      */
@@ -46,7 +34,7 @@ public class SenderWithDirectExchange {
             // 参数三【durable】：设置是否持久化。durable设置为true时表示持久化，反之非持久化.持久化可以将交换器存入磁盘，在服务器重启的时候不会丢失相关信息
             // 参数四【autoDelete】：设置是否自动删除。autoDelete设置为true时，则表示自动删除。自动删除的前提是至少有一个队列或者交换器与这个交换器绑定，之后，所有与这个交换器绑定的队列或者交换器都与此解绑。不能错误的理解—当与此交换器连接的客户端都断开连接时，RabbitMq会自动删除本交换器
             // 参数五【internal】：其它一些结构化的参数，比如：alternate-exchange
-            channel.exchangeDeclare(EXCHANGE, "direct" , true , false , null) ;
+            channel.exchangeDeclare(EXCHANGE, "direct", true, false, null);
 
             // 队列参数
 //            Map<String, Object> params = new HashMap();
@@ -58,13 +46,7 @@ public class SenderWithDirectExchange {
             //将交换器与队列通过路由键绑定,第一个参数：队列名，第二个参数：交换机名称，第三个参数：队列在交换机中的路由映射
             channel.queueBind(QUEUE, EXCHANGE, QUEUE);
 
-//            AMQP.BasicProperties PERSISTENT_TEXT_PLAIN = new AMQP.BasicProperties("text/plain", (String)null, (Map)null, 2, 0, (String)null, (String)null, (String)null, (String)null, (Date)null, (String)null, (String)null, (String)null, (String)null);
-
-            // 消息内容
-            String msg = "哈哈哈哈哈哈哈2!";
-            // 推送内容【参数说明：参数一：交换机名；参数二：队列映射的路由key，因为没有设置交换机（参数一），此处就是队列名称，参数三：消息的其他属性-路由的headers信息；参数四：消息主体】
-            channel.basicPublish(EXCHANGE, QUEUE, MessageProperties.PERSISTENT_TEXT_PLAIN, msg.getBytes());
-            System.out.println("发送成功");
+            System.out.println("操作成功");
         } catch (IOException e) {
             e.printStackTrace();
         } catch (TimeoutException e) {
