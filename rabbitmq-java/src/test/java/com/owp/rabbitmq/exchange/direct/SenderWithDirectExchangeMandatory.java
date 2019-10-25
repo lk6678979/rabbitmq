@@ -34,7 +34,7 @@ public class SenderWithDirectExchangeMandatory {
             // 从连接中创建通道
             channel = con.createChannel();
             channel.basicQos(1);
-            channel.basicPublish(EXCHANGE, QUEUE, true, MessageProperties.PERSISTENT_TEXT_PLAIN, "===mandatory===".getBytes());
+            channel.basicPublish(EXCHANGE, "111", true, MessageProperties.PERSISTENT_TEXT_PLAIN, "===mandatory===".getBytes());
             channel.addReturnListener(new ReturnListener() {
                 public void handleReturn(int replyCode, String replyText, String exchange, String routingKey, AMQP.BasicProperties basicProperties, byte[] body) throws IOException {
                     String message = new String(body);

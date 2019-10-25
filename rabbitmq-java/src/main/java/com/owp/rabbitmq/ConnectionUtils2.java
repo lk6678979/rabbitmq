@@ -1,5 +1,6 @@
 package com.owp.rabbitmq;
 
+import com.rabbitmq.client.Address;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
@@ -7,7 +8,10 @@ import com.rabbitmq.client.ConnectionFactory;
 import java.io.IOException;
 import java.util.concurrent.TimeoutException;
 
-public class ConnectionUtils {
+/**
+ * 集群模式，多个host
+ */
+public class ConnectionUtils2 {
     /**
      * 获取连接
      *
@@ -18,9 +22,10 @@ public class ConnectionUtils {
     public static Connection getConnection() throws IOException, TimeoutException {
         ConnectionFactory factory = new ConnectionFactory();
         // 设置服务地址
-        factory.setHost("47.106.135.182");
+//        factory.setHost("47.106.135.182");
+        Address[] addrs = new Address[]{new Address("kafka01",5672),new Address("kafka02",5672),new Address("kafka03",5672)};
         // 端口
-        factory.setPort(5672);
+//        factory.setPort(5672);
         // vhost
         /**
          * 像mysql有数据库的概念并且可以指定用户对库和表等操作的权限。那RabbitMQ呢？RabbitMQ也有类似的权限管理。
@@ -30,11 +35,11 @@ public class ConnectionUtils {
          */
         factory.setVirtualHost("/vmsdms");
         // 用户名
-        factory.setUsername("liukai");
+        factory.setUsername("sziov");
         // 密码
-        factory.setPassword("liukai");
+        factory.setPassword("sziov");
 
-        return factory.newConnection();
+        return factory.newConnection(addrs);
     }
 
     /**

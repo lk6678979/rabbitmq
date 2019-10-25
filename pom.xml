@@ -10,6 +10,7 @@
     <version>1.0.0</version>
     <modules>
         <module>rabbitmq-java</module>
+        <module>rabbitmq-cloud</module>
     </modules>
 
 
