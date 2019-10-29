@@ -1,0 +1,66 @@
+server:
+  port: 3333
+spring:
+  application:
+    name: rabbitmq-cloud
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+  cloud:
+    stream:
+      #详细配置见https://docs.spring.io/spring-cloud-stream/docs/Chelsea.SR2/reference/htmlsingle/index.html#durability，搜索RabbitMQ Consumer Properties和Rabbit Producer Properties
+      rabbit:
+        bindings:
+          demo_input:
+            consumer:
+              exchangeAutoDelete: false  #如果declareexchange为true，则是否应自动删除Exchange（在删除最后一个队列后删除）.默认：true
+              exchangeDurable: true   #如果declareexchange为true，则exchange是否应该是持久的（在代理重新启动后仍然存在）。默认：true
+              durableSubscription: true #订阅的队列是否应持久。仅当group设置组时有效.默认：true
+              exchangeType: direct  #交换机类型，默认：topic
+              bindingRoutingKey: alarm.workorder.appoint  #队列绑定路由Key
+              acknowledge-mode: manual  #手动提交，默认：AUTO（自动提交）
+              queueNameGroupOnly: true #队列名称是否只使用groupid（如果false，名称会使用destination+groupid）
+          demo_output: #@Input和@Output的参数字符串
+            producer:
+              exchangeAutoDelete: false  #如果declareexchange为true，则是否应自动删除Exchange（在删除最后一个队列后删除）.默认：true
+              exchangeDurable: true   #如果declareexchange为true，则exchange是否应该是持久的（在代理重新启动后仍然存在）。默认：true
+              exchangeType: direct  #交换机类型，默认：topic
+              routing-key-expression: '''alarm.workorder.appoint'''  # 需要用这个来指定 RoutingKey,这里是表达式（三个单引号标识直接使用字符串，不用去对象取数据）
+              queueNameGroupOnly: true #队列名称是否只使用groupid（如果false，名称会使用destination+groupid）
+      bindings:
+        #配置自己定义的通道与哪个中间件交互
+        demo_input: #@Input和@Output的参数字符串
+          binder: rabbitmq   #binders选择一个绑定对象
+          destination: alarm.workorder #rabbitmq中的exchange
+          content-type: application/json  #数据格式json
+          group: alarm.workorder.appoint   #如果分组，实质是上在mq上创建独立的队列去接收交换机的消息，如果我们系统里一个交换机配置了多个消费者组，在mq就创建多个队列，group相当于RabbitMQ中Queue的名称，拥有 group 默认会持久化队列
+        #          consumer: #消费者参数
+        #            concurrency: 1  #流入消费者的并发性
+        #            instanceIndex: 0 # 当设置为大于等于0的值的时候，允许自定义此消费者的实例索引注意：(会在MQ中创建group-instanceIndex的队列）。例如这里：会在alarm.workorder交换机中创建alarm.workorder.result-1的队列
+        #            instanceCount: 1  #消费者实例总数，当设置为大于等于0的值的时候，允许自定义此消费者的实例数量
+        #            partitioned: true  #消费者是否接受来自一个分区的生产者数据
+        #            headerMode: raw #头部机制
+        demo_output: #@Input和@Output的参数字符串
+          binder: rabbitmq   #binders选择一个绑定对象
+          destination: alarm.workorder #rabbitmq中的exchange
+          content-type: application/json  #数据格式json
+      #          producer:
+      #            headerMode: raw
+      #            partitionKeyExpression: payload.keyId
+      #            partitionCount: 15     （会根据partitionKeyExpression，将数据写入对应的topic）
+      default-binder: rabbitmq #默认的binder是kafka
+      binders:
+        rabbitmq:
+          type: rabbit
+          environment: #配置rabbimq连接环境
+            spring:
+              rabbitmq:
+                #单节点用host+port
+                #                host: kafka01,kafka02,kafka03
+                #                port: 5672
+                #多节点集群用addresses
+                addresses: kafka01:5672,kafka02:5672,kafka03:5672
+                #                port: 5672
+                username: sziov
+                password: sziov
+                virtual-host: /test1-vmsdmw  #mq虚拟机配置

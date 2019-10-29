@@ -26,7 +26,7 @@ public class RecverSimple {
             con = ConnectionUtils.getConnection();
             // 从连接中创建通道
             channel = con.createChannel();
-            channel . basicQos(64) ; //设置客户端最多接收未被 ack 的消息的个数
+            channel.basicQos(64); //设置客户端最多接收未被 ack 的消息的个数
 
             //以下的defaultconsumer实现了consumer这个接口,这个接口被用来缓冲服务器推送过来的信息
             //一开始的set up和刚刚的send.java里的相似:1.打开一个连接,2.声明一个队列（这个队列名要和刚刚的队列名相同）
@@ -43,7 +43,7 @@ public class RecverSimple {
                 }
             };
             // 监听队列,参数1：队列名称，参数2：是否自动提交，参数3：消费者类
-            String result = channel.basicConsume(QUEUE, true, consumer);
+            String result = channel.basicConsume(QUEUE, true, "consumerTag", consumer);
             System.out.println("result:" + result);
         } catch (IOException e) {
             e.printStackTrace();
