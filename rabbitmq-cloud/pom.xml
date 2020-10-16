@@ -29,7 +29,7 @@
         <fastjson>1.2.41</fastjson>
         <gson.version>2.8.5</gson.version>
         <commons-pool2.version>2.4.2</commons-pool2.version>
-        <junit.version>4.12</junit.version>
+        <junit.version>4.13.1</junit.version>
     </properties>
     <!-- 项目通用依赖jar-->
     <dependencies>
