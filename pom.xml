@@ -11,6 +11,7 @@
     <modules>
         <module>rabbitmq-java</module>
         <module>rabbitmq-cloud</module>
+        <module>rabbitmq-boot</module>
     </modules>
 
 

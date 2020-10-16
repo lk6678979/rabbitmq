@@ -43,7 +43,7 @@ public class RecverSimple {
                 }
             };
             // 监听队列,参数1：队列名称，参数2：是否自动提交，参数3：消费者类
-            String result = channel.basicConsume(QUEUE, true, "consumerTag", consumer);
+            String result = channel.basicConsume(QUEUE, false, "consumerTag", consumer);
             System.out.println("result:" + result);
         } catch (IOException e) {
             e.printStackTrace();

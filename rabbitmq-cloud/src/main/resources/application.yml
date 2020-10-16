@@ -63,4 +63,4 @@ spring:
                 #                port: 5672
                 username: sziov
                 password: sziov
-                virtual-host: /test1-vmsdmw  #mq虚拟机配置
+                virtual-host: /data-syn-hub-didi-test  #mq虚拟机配置

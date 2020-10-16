@@ -1,0 +1,27 @@
+server:
+  port: 3335
+spring:
+  application:
+    name: rabbitmq-boot
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+  rabbitmq:
+    addresses: kafka01:5672,kafka02:5672,kafka03:5672
+    username: sziov
+    password: sziov
+    virtual-host: /data-syn-hub-didi
+    #消息确认配置项
+    #确认消息已发送到交换机(Exchange)
+    publisher-confirms: true
+    #确认消息已发送到队列(Queue)
+    publisher-returns: true
+    listener:
+      simple:
+        acknowledge-mode: manual #消费手动确认
+        concurrency: 5  #每个listener在初始化的时候设置的并发消费者的个数
+        prefetch: 10  #每次从一次性从broker里面取的待消费的消息的个数
+        retry:
+          enabled: true   # 允许消息消费失败的重试
+          max-attempts: 3   # 消息最多消费次数3次
+          initial-interval: 2000    # 消息多次消费的间隔2秒
